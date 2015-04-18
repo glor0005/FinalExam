@@ -21,7 +21,7 @@ public:
   * @param The Graphics object used to initialize the new piece.
   */
   void AddBodyPiece(Graphics *graphics);
-
+  
   /**
   * Sets the direction of the head of our player. The player will only move in that direction after 
   * moving at least 1 unit in the current direction.
@@ -32,6 +32,10 @@ public:
 
   void SetHeadPosition(Vector3 position);
   Vector3 GetHeadPosition();
+
+  //newly added
+  void ResetPlayer();
+  void SetSpeed(float speed);
 
 protected:
   std::vector<BodyNode *> _body;

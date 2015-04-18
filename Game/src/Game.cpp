@@ -43,7 +43,7 @@ SDL_Texture *_texture;
 
 void Game::InitializeImpl()
 {
-  SDL_SetWindowTitle(_window, "Game");
+	
 
   float nearPlane = 0.01f;
   float farPlane = 100.0f;
@@ -68,6 +68,10 @@ void Game::InitializeImpl()
   {
     (*itr)->Initialize(_graphicsObject);
   }
+
+  sprintf(buffer, "Snake by Juan Marco Gloriani \t \t \t \t \t \t \t Score : %i", currentScore);
+  SDL_SetWindowTitle(_window, buffer);
+
 }
 
 void Game::UpdateImpl(float dt)
@@ -97,7 +101,29 @@ void Game::UpdateImpl(float dt)
     (*itr)->Update(dt);
   }
 
+  Collision(_player, _fruit);
+
   // Do bounds checking.
+  if (_player->GetHeadPosition().x > 10 || _player->GetHeadPosition().x < -10 || _player->GetHeadPosition().y > 10 || _player->GetHeadPosition().y < -10)
+  {
+	  currentScore = 0.0f;
+
+	  //_player->SetSpeed(0.0f);
+	  _player->ResetPlayer();
+	  
+	  _player->SetSpeed(3.0f);
+
+	  //Vector4 position(0, 0, 2.5f, 0.0f);
+	  //Vector4 lookAt = Vector4::Normalize(Vector4::Difference(Vector4(0.0f, 0.0f, 0.0f, 0.0f), position));
+	  //Vector4 up(0.0f, 1.0f, 0.0f, 0.0f);
+
+	  //_player->ResetPlayer();
+	  //_player->SetHeadPosition()
+	  //_player->SetHeadDirection(BodyNode::UP);
+  }
+  
+  sprintf(buffer, "Snake by Juan Marco Gloriani \t \t \t \t \t \t \t Score : %i", currentScore);
+  SDL_SetWindowTitle(_window, buffer);
 }
 
 void Game::DrawImpl(Graphics *graphics, float dt)
@@ -137,4 +163,19 @@ void Game::CalculateCameraViewpoint(Camera *camera)
   glRotatef(cross.z * dot, 0.0f, 0.0f, 1.0f);
 
   glTranslatef(-camera->GetPosition().x, -camera->GetPosition().y, -camera->GetPosition().z);
+}
+
+void Game::Collision(Player * player, Fruit * fruit)
+{
+	// If a fruit is collected, update score and add a body
+	if (((player->GetHeadPosition().x < (_fruit->GetTransform().position.x + 0.75)) && (player->GetHeadPosition().x > fruit->GetTransform().position.x - 0.75)) &&
+		((player->GetHeadPosition().y < (fruit->GetTransform().position.y + 0.75)) && (player->GetHeadPosition().y > fruit->GetTransform().position.y - 0.75))
+		)
+	{
+		_fruit->GetTransform().position.x = rand() % 9 + 1;
+		_fruit->GetTransform().position.y = rand() % 6 + 1;
+		_player->AddBodyPiece(_graphicsObject);
+		currentScore += 1;
+	}
+
 }

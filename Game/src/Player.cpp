@@ -235,3 +235,20 @@ Vector3 Player::GetHeadPosition()
 {
   return _body[0]->GetTransform().position;
 }
+
+void Player::ResetPlayer()
+{
+	_body.resize(1);
+	SetHeadDirection(BodyNode::UP);
+	
+	_body[0]->moveSpeed = 0;
+	_body[0]->GetTransform().position.x = 0;
+	_body[0]->GetTransform().position.y = 0;
+
+}
+
+void Player::SetSpeed(float speed)
+{
+	_body[0]->moveSpeed = speed;
+}
+

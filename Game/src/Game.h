@@ -25,9 +25,14 @@ protected:
   void Reset();
   void CalculateCameraViewpoint(Camera *camera);
 
+  void Collision(Player * player, Fruit * fruit);
+
   Player *_player;
   Fruit *_fruit;
   int currentScore;
 
   Camera *_gameCamera;
+
+  //New by Marco
+  char buffer[50];
 };
